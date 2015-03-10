@@ -160,6 +160,40 @@ public class Quaternion {
   }
 
   /**
+   * Performs multiplication of this quaternion with the input quaternion, i.e.
+   * {@code this * another}
+   *
+   * @param another The other quaternion involving in the multiplication
+   * @return The quaternion which is the multiplication result
+   */
+  public final Quaternion multiply(Quaternion another) {
+    Quaternion result = new Quaternion(this);
+    result.multiplyEq(another);
+    return result;
+  }
+
+  /**
+   * Performs multiplication of this quaternion with the input quaternion, i.e.
+   * {@code this * another}. Assigns the result to this object
+   *
+   * @param another The other quaternion involving in the multiplication
+   */
+  public final void multiplyEq(Quaternion another) {
+    double newW = another.w * this.w - another.x * this.x -
+      another.y * this.y - another.z * this.z;
+    double newX = another.w * this.x + another.x * this.w -
+      another.y * this.z + another.z * this.y;
+    double newY = another.w * this.y + another.x * this.z +
+      another.y * this.w - another.z * this.x;
+    double newZ = another.w * this.z - another.x * this.y +
+      another.y * this.x + another.z * this.w;
+    this.w = newW;
+    this.x = newX;
+    this.y = newY;
+    this.z = newZ;
+  }
+
+  /**
    * Gets a string representation of this Quaternion for display purposes
    *
    * @return A string contains information about this Quaternion

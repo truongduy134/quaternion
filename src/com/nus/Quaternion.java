@@ -194,6 +194,36 @@ public class Quaternion {
   }
 
   /**
+   * Gets the inverse (reciprocal) of this quaternion
+   *
+   * @return The inverse quaternion
+   */
+  public final Quaternion inverse() {
+    return new Quaternion();
+  }
+
+  /**
+   * Inverts this quaternion
+   *
+   * @see #invert()
+   */
+  public final void inverseEq() {
+    this.invert();
+  }
+
+  /**
+   * Inverts this quaternion
+   */
+  public final void invert() {
+    double sqNorm = this.squaredNorm();
+    this.conjugateEq();
+    this.x /= sqNorm;
+    this.y /= sqNorm;
+    this.z /= sqNorm;
+    this.w /= sqNorm;
+  }
+
+  /**
    * Gets a string representation of this Quaternion for display purposes
    *
    * @return A string contains information about this Quaternion

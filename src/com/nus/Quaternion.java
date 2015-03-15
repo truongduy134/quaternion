@@ -199,7 +199,9 @@ public class Quaternion {
    * @return The inverse quaternion
    */
   public final Quaternion inverse() {
-    return new Quaternion();
+    Quaternion result = new Quaternion(this);
+    result.invert();
+    return result;
   }
 
   /**

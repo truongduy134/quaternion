@@ -160,4 +160,20 @@ public class QuaternionTest {
     p.inverseEq();
     assertQuaternionEquals(p, expectedInverse);
   }
+
+  @Test
+  public void testDivide() {
+    Quaternion p = new Quaternion(0.5, 0.5, 0.75, 1.0);
+    Quaternion q = new Quaternion(0.0, 1.0, 0.0, 1.0);
+    Quaternion expectDiv = new Quaternion(0.625, -0.25, 0.125, 0.75);
+
+    assertQuaternionEquals(p.divide(q), expectDiv);
+
+    p.divideEq(q);
+    assertQuaternionEquals(p, expectDiv);
+
+    expectDiv = new Quaternion(0.0, 0.0, 0.0, 1.0);
+    q.divideEq(q);
+    assertQuaternionEquals(q, expectDiv);
+  }
 }

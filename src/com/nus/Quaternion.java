@@ -226,6 +226,29 @@ public class Quaternion {
   }
 
   /**
+   * Performs division of this quaternion with the input quaternion, i.e.
+   * {@code this / another}
+   *
+   * @param another The other quaternion involving in the division
+   * @return The quaternion which is the division result
+   */
+  public final Quaternion divide(Quaternion another) {
+    Quaternion result = new Quaternion(this);
+    result.divideEq(another);
+    return result;
+  }
+
+  /**
+   * Performs division of this quaternion with the input quaternion, i.e.
+   * {@code this / another}. Assigns the result to this object
+   *
+   * @param another The other quaternion involving in the division
+   */
+  public final void divideEq(Quaternion another) {
+    this.multiplyEq(another.inverse());
+  }
+
+  /**
    * Gets a string representation of this Quaternion for display purposes
    *
    * @return A string contains information about this Quaternion

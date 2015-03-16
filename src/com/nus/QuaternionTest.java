@@ -112,4 +112,52 @@ public class QuaternionTest {
     p.addEq(q);
     assertQuaternionEquals(p, expectSum);
   }
+
+  @Test
+  public void testMultiple() {
+    Quaternion p = new Quaternion(0.0, 1.0, 0.0, 1.0);
+    Quaternion q = new Quaternion(0.5, 0.5, 0.75, 1.0);
+    Quaternion expectProd = new Quaternion(1.25, 1.5, 0.25, 0.5);
+
+    assertQuaternionEquals(p.multiply(q), expectProd);
+
+    expectProd = new Quaternion(-0.25, 1.5, 1.25, 0.5);
+    assertQuaternionEquals(q.multiply(p), expectProd);
+
+    Quaternion expectSelfProd = new Quaternion(0.0, 2.0, 0.0, 0.0);
+    p.multiplyEq(p);
+    assertQuaternionEquals(p, expectSelfProd);
+
+    expectSelfProd = new Quaternion(1.0, 1.0, 1.5, -0.0625);
+    q.multiplyEq(q);
+    assertQuaternionEquals(q, expectSelfProd);
+  }
+
+  @Test
+  public void testInverse() {
+    Quaternion p = new Quaternion(0.0, 1.0, 0.0, 1.0);
+    Quaternion expectedInverse = new Quaternion(0.0, -0.5, 0.0, 0.5);
+
+    assertQuaternionEquals(p.inverse(), expectedInverse);
+
+    p = new Quaternion(2.0, -1.0, -3.0, 0.0);
+    expectedInverse = new Quaternion(-1.0 / 7.0, 1.0 / 14.0, 3.0 / 14.0, 0.0);
+
+    assertQuaternionEquals(p.inverse(), expectedInverse);
+  }
+
+  @Test
+  public void testInvert() {
+    Quaternion p = new Quaternion(0.0, 1.0, 0.0, 1.0);
+    Quaternion expectedInverse = new Quaternion(0.0, -0.5, 0.0, 0.5);
+
+    p.invert();
+    assertQuaternionEquals(p, expectedInverse);
+
+    p = new Quaternion(2.0, -1.0, -3.0, 0.0);
+    expectedInverse = new Quaternion(-1.0 / 7.0, 1.0 / 14.0, 3.0 / 14.0, 0.0);
+
+    p.inverseEq();
+    assertQuaternionEquals(p, expectedInverse);
+  }
 }

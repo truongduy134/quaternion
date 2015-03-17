@@ -249,6 +249,52 @@ public class Quaternion {
   }
 
   /**
+   * Returns the rotation matrix represented by the normalized version of
+   * this quaternion
+   *
+   * @return A 3 x 3 rotation matrix
+   */
+  public final double[][] getRotationMatrix() {
+    double sqNorm = this.squaredNorm();
+    double[][] mat = new double[][] {
+      {sqNorm - 2 * (y * y + z * z), 2 * (x * y - z * w), 2 * (x * z + y * w)},
+      {2 * (x * y + z * w), sqNorm - 2 * (x * x + z * z), 2 * (y * z - x * w)},
+      {2 * (x * z - y * w), 2 * (y * z + x * w), sqNorm - 2 * (x * x + y * y)},
+    };
+    for (int i = 0; i < 3; ++i) {
+      for (int j = 0; j < 3; ++j) {
+        mat[i][j] /= sqNorm;
+      }
+    }
+    return mat;
+  }
+
+  /**
+   * Rotates a 3D vector by the rotation represented by this quaternion
+   *
+   * @param vector An array of size 3 representing a 3D vector
+   * @return The image of the input vector after the rotation
+   * @throws IllegalArgumentException if input vector is not an array of size 3
+   */
+  public final double[] rotate(double[] vector) throws Exception {
+    if (vector.length != 3) {
+      throw new IllegalArgumentException("Input must be an array of size 3");
+    }
+
+    double[][] rotationMat = this.getRotationMatrix();
+    double[] imageVector = new double[3];
+
+    for (int r = 0; r < 3; r++) {
+      imageVector[r] = 0.0;
+      for (int c = 0; c < 3; c++) {
+        imageVector[r] += rotationMat[r][c] * vector[c];
+      }
+    }
+
+    return imageVector;
+  }
+
+  /**
    * Gets a string representation of this Quaternion for display purposes
    *
    * @return A string contains information about this Quaternion

@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class QuaternionTest {
@@ -175,5 +176,42 @@ public class QuaternionTest {
     expectDiv = new Quaternion(0.0, 0.0, 0.0, 1.0);
     q.divideEq(q);
     assertQuaternionEquals(q, expectDiv);
+  }
+
+  @Test
+  public void testRotate() {
+    Quaternion q = new Quaternion(0.0, 1.0, 0.0, 1.0);
+    double[] v = new double[] {1.0, 1.0, 1.0};
+    double[] expectImageV = new double[] {1.0, 1.0, -1.0};
+
+    try {
+      assertArrayEquals(q.rotate(v), expectImageV, EPSILON);
+    } catch(Exception e) {}
+
+    q = new Quaternion(2.0, -1.0, -3.0, 0.0);
+    expectImageV = new double[] {-11.0 / 7.0, -5.0 / 7.0, -1.0 / 7.0};
+    try {
+      assertArrayEquals(q.rotate(v), expectImageV, EPSILON);
+    } catch (Exception e) {}
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testRotateWithInvalidInput() throws Exception {
+    Quaternion q = new Quaternion(0.0, 1.0, 0.0, 1.0);
+    double[] v = new double[2];
+    q.rotate(v);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testRotateWithAnotherInvalidInput() throws Exception {
+    Quaternion q = new Quaternion(0.0, 1.0, 0.0, 1.0);
+    double[] v = new double[20];
+    q.rotate(v);
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void testRotateWithNullInput() throws Exception {
+    Quaternion q = new Quaternion(0.0, 1.0, 0.0, 1.0);
+    q.rotate(null);
   }
 }

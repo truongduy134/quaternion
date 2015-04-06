@@ -4,8 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class QuaternionTest {
 
@@ -50,6 +49,42 @@ public class QuaternionTest {
     assertEquals(q.getY(), 1.3, EPSILON);
     assertEquals(q.getZ(), 0.4, EPSILON);
     assertEquals(q.getW(), 0.5, EPSILON);
+  }
+
+  @Test
+  public void testGetIdentity() {
+    Quaternion identity = new Quaternion(0.0, 0.0, 0.0, 1.0);
+    assertQuaternionEquals(Quaternion.getIdentity(), identity);
+  }
+
+  @Test
+  public void testIsIdentity() {
+    Quaternion identity = new Quaternion();
+    assertTrue(identity.isIdentity());
+
+    Quaternion p = new Quaternion(0.0, 1.0, 0.0, 1.0);
+    assertFalse(p.isIdentity());
+
+    p = new Quaternion(0.0, 0.0, 0.0, 0.0);
+    assertFalse(p.isIdentity());
+
+    p = new Quaternion(0.1, 0.1, 0.0, -0.00001);
+    assertFalse(p.isIdentity());
+  }
+
+  @Test
+  public void testIsUnit() {
+    Quaternion identity = new Quaternion();
+    assertTrue(identity.isUnit());
+
+    Quaternion q = new Quaternion(0.0, 1.0, 0.0, 0.0);
+    assertTrue(q.isUnit());
+
+    q = new Quaternion(0.5, 0.5, 0.5, 0.5);
+    assertTrue(q.isUnit());
+
+    q = new Quaternion(0.16666667, 0.3333333, 0.5, 0.666666668);
+    assertFalse(q.isUnit());
   }
 
   @Test
@@ -213,5 +248,52 @@ public class QuaternionTest {
   public void testRotateWithNullInput() throws Exception {
     Quaternion q = new Quaternion(0.0, 1.0, 0.0, 1.0);
     q.rotate(null);
+  }
+
+  @Test
+  public void testGetQuaternionFromAxisAngle() throws Exception {
+    double[] axis = new double[] {0.0, 0.0, 1.0};
+    double angleDeg = 60.0;
+    Quaternion expected = new Quaternion(0.0, 0.0, 0.5, 0.86602540378);
+    Quaternion result = Quaternion.fromAxisAngle(axis, angleDeg);
+    assertQuaternionEquals(result, expected);
+    assertTrue(result.isUnit());
+
+    axis = new double[] {2.0, 5.0, -10.0};
+    angleDeg = 90.0;
+    expected = new Quaternion(
+      0.12451456127, 0.31128640318, -0.62257280636, 0.70710678118);
+    result = Quaternion.fromAxisAngle(axis, angleDeg);
+    assertQuaternionEquals(result, expected);
+    assertTrue(result.isUnit());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAxisAngleWithInvalidVector() throws Exception {
+    double[] nastyVector = new double[2];
+    Quaternion.fromAxisAngle(nastyVector, 100);
+  }
+
+  @Test
+  public void testGetQuaternionFromAxisAngleRad() throws Exception {
+    double[] axis = new double[] {0.0, 0.0, 1.0};
+    double angleRad = 1.0471975511965976;
+    Quaternion expected = new Quaternion(0.0, 0.0, 0.5, 0.86602540378);
+    Quaternion result = Quaternion.fromAxisAngleRad(axis, angleRad);
+    assertQuaternionEquals(result, expected);
+    assertTrue(result.isUnit());
+
+    axis = new double[] {0.5, 0.5, 0.7071067811865476};
+    angleRad = Math.PI;
+    expected = new Quaternion(0.5, 0.5, 0.7071067811865476, 0.0);
+    result = Quaternion.fromAxisAngleRad(axis, angleRad);
+    assertQuaternionEquals(result, expected);
+    assertTrue(result.isUnit());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAxisAngleRadWithInvalidVector() throws Exception {
+    double[] nastyVector = new double[10];
+    Quaternion.fromAxisAngleRad(nastyVector, Math.PI);
   }
 }

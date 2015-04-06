@@ -9,8 +9,12 @@ public class Quaternion {
   private double z;
   private double w;
 
+  private final double EPSILON = 0.00000000001;
+  public static final String VECTOR_INVALID_LENGTH_MSG =
+    "Input vector must be an array of size 3";
+
   /**
-   * Default Constructor. Constructs a Quaternion (0.0, 0.0, 0.0, 1.0)
+   * Default Constructor. Constructs an identity Quaternion (0.0, 0.0, 0.0, 1.0)
    */
   public Quaternion() {
     this(0.0, 0.0, 0.0, 1.0);
@@ -77,6 +81,25 @@ public class Quaternion {
    */
   public double getW() {
     return w;
+  }
+
+  /**
+   * Checks if this Quaternion is an identity quaternion (0.0, 0.0, 0.0, 1.0)
+   *
+   * @return {@code true} if this Quaternion is an identity quaternion, or
+   * {@code false} otherwise
+   */
+  public boolean isIdentity() {
+    return Math.abs(this.squaredNorm() - 1.0) < EPSILON &&
+      Math.abs(this.w - 1.0) < EPSILON;
+  }
+
+  /**
+   * Checks if this Quaternion is a unit quaternion
+   * @return
+   */
+  public boolean isUnit() {
+    return Math.abs(this.norm() - 1.0) < EPSILON;
   }
 
   /**
@@ -303,5 +326,70 @@ public class Quaternion {
   public String toString() {
     return String.format("Quaternion(%f, %f, %f, %f)",
       this.x, this.y, this.z, this.w);
+  }
+
+  // Static functions to create Quaternion
+
+  /**
+   * Gets an identity Quaternion (0.0, 0.0, 0.0, 1.0)
+   * @return An identity Quaternion
+   */
+  public static Quaternion getIdentity() {
+    return new Quaternion();
+  }
+
+  /**
+   * Gets the unit Quaternion of a rotation which is given by the input axis,
+   * and angle (in degrees)
+   *
+   * @param axis An array of size 3 representing the vector (x, y, z)
+   * @param angleInDeg The angle (in degrees) of the rotation
+   * @return The unit Quaternion of the rotation given by the input axis-angle
+   *         representation
+   * @throws IllegalArgumentException if input vector is not an array of size 3
+   */
+  public static Quaternion fromAxisAngle(double[] axis, double angleInDeg)
+      throws Exception {
+    if (axis.length != 3) {
+      throw new IllegalArgumentException(Quaternion.VECTOR_INVALID_LENGTH_MSG);
+    }
+
+    double angleInRad = degreeToRadian(angleInDeg);
+    return fromAxisAngleRad(axis, angleInRad);
+  }
+
+  /**
+   * Gets the unit Quaternion of a rotation which is given by the input axis,
+   * and angle (in radians)
+   *
+   * @param axis An array of size 3 representing the vector (x, y, z)
+   * @param angleInRad The angle (in radians) of the rotation
+   * @return The unit Quaternion of the rotation given by the input axis-angle
+   *         representation
+   * @throws IllegalArgumentException if input vector is not an array of size 3
+   */
+  public static Quaternion fromAxisAngleRad(double[] axis, double angleInRad) {
+    if (axis.length != 3) {
+      throw new IllegalArgumentException(Quaternion.VECTOR_INVALID_LENGTH_MSG);
+    }
+
+    // Normalize the input vector
+    double vectorNorm = Math.sqrt(axis[0] * axis[0] + axis[1] * axis[1] +
+      axis[2] * axis[2]);
+    axis[0] /= vectorNorm;
+    axis[1] /= vectorNorm;
+    axis[2] /= vectorNorm;
+
+    double halfAngle = angleInRad / 2.0;
+    double sinTerm = Math.sin(halfAngle);
+    double x = axis[0] * sinTerm;
+    double y = axis[1] * sinTerm;
+    double z = axis[2] * sinTerm;
+    double w = Math.cos(halfAngle);
+    return new Quaternion(x, y, z, w);
+  }
+
+  private static double degreeToRadian(double degree) {
+    return Math.PI * degree / 180;
   }
 }

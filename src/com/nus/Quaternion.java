@@ -84,6 +84,56 @@ public class Quaternion {
   }
 
   /**
+   * Gets the angle (in degree) in the angle-axis representation of the rotation
+   * that this Quaternion represents
+   *
+   * @return The angle (in degree) of the rotation
+   */
+  public double getAngle() {
+    return radianToDegree(this.getAngleRad());
+  }
+
+  /**
+   * Gets the angle (in radian) in the angle-axis representation of the rotation
+   * that this Quaternion represents
+   *
+   * @return The angle (in radian) of the rotation
+   */
+  public double getAngleRad() {
+    Quaternion unitQ = new Quaternion(this);
+    unitQ.normalize();
+
+    double x = unitQ.getX();
+    double y = unitQ.getY();
+    double z = unitQ.getZ();
+    double vNorm = Math.sqrt(x * x + y * y + z * z);
+
+    return 2 * Math.atan2(vNorm, unitQ.getW());
+  }
+
+  /**
+   * Gets the vector axis in the angle-axis representation of the rotation that
+   * this Quaternion represents
+   *
+   * @return A unit vector for the rotation axis, or a zero vector in
+   *         degenerate case
+   */
+  public double[] getRotationAxis() {
+    double angleRad = this.getAngleRad();
+    double norm = this.norm();
+
+    double[] axis = new double[] {0.0, 0.0, 0.0};
+    if (Math.abs(angleRad) > EPSILON) {
+      double sinTerm = Math.sin(angleRad / 2.0);
+      axis[0] = this.x / (norm * sinTerm);
+      axis[1] = this.y / (norm * sinTerm);
+      axis[2] = this.z / (norm * sinTerm);
+    }
+
+    return axis;
+  }
+
+  /**
    * Checks if this Quaternion is an identity quaternion (0.0, 0.0, 0.0, 1.0)
    *
    * @return {@code true} if this Quaternion is an identity quaternion, or
@@ -391,5 +441,9 @@ public class Quaternion {
 
   private static double degreeToRadian(double degree) {
     return Math.PI * degree / 180;
+  }
+
+  private static double radianToDegree(double radian) {
+    return radian / Math.PI * 180;
   }
 }

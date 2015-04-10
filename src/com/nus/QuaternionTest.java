@@ -323,4 +323,19 @@ public class QuaternionTest {
     q = new Quaternion(1, 3, 0, 0);
     assertEquals(q.getAngleRad(), 3.141592653589793, EPSILON);
   }
+
+  @Test
+  public void testGetRotationAxis() throws Exception {
+    double[] expectedAxis = new double[] {
+      0.20628424925175867, 0.309426373877638, 0.928279121632914};
+    double angle = 60.0;
+    Quaternion q = Quaternion.fromAxisAngle(expectedAxis, angle);
+    double [] axis = q.getRotationAxis();
+    assertArrayEquals(axis, expectedAxis, EPSILON);
+
+    expectedAxis = new double[] {0.0, 0.0, 0.0};
+    q = new Quaternion();   // Identity quaternion
+    axis = q.getRotationAxis();
+    assertArrayEquals(axis, expectedAxis, EPSILON);
+  }
 }

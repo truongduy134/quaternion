@@ -146,7 +146,8 @@ public class Quaternion {
 
   /**
    * Checks if this Quaternion is a unit quaternion
-   * @return
+   * @return {@code true} if this Quaternion is a unit quaternion, or
+   * {@code false} otherwise
    */
   public boolean isUnit() {
     return Math.abs(this.norm() - 1.0) < EPSILON;
@@ -349,7 +350,8 @@ public class Quaternion {
    * @return The image of the input vector after the rotation
    * @throws IllegalArgumentException if input vector is not an array of size 3
    */
-  public final double[] rotate(double[] vector) throws Exception {
+  public final double[] rotate(double[] vector)
+      throws IllegalArgumentException {
     if (vector.length != 3) {
       throw new IllegalArgumentException("Input must be an array of size 3");
     }
@@ -399,7 +401,7 @@ public class Quaternion {
    * @throws IllegalArgumentException if input vector is not an array of size 3
    */
   public static Quaternion fromAxisAngle(double[] axis, double angleInDeg)
-      throws Exception {
+      throws IllegalArgumentException {
     if (axis.length != 3) {
       throw new IllegalArgumentException(Quaternion.VECTOR_INVALID_LENGTH_MSG);
     }
@@ -418,7 +420,8 @@ public class Quaternion {
    *         representation
    * @throws IllegalArgumentException if input vector is not an array of size 3
    */
-  public static Quaternion fromAxisAngleRad(double[] axis, double angleInRad) {
+  public static Quaternion fromAxisAngleRad(double[] axis, double angleInRad)
+      throws IllegalArgumentException {
     if (axis.length != 3) {
       throw new IllegalArgumentException(Quaternion.VECTOR_INVALID_LENGTH_MSG);
     }

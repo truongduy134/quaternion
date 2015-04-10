@@ -299,4 +299,28 @@ public class QuaternionTest {
     double[] nastyVector = new double[10];
     Quaternion.fromAxisAngleRad(nastyVector, Math.PI);
   }
+
+  @Test
+  public void testGetAngle() {
+    Quaternion q = new Quaternion(1, 0, 9, 0);
+    assertEquals(q.getAngle(), 180.0, EPSILON);
+
+    q = new Quaternion(1, 2, 3, 4);
+    assertEquals(q.getAngle(), 86.17744627072567, EPSILON);
+
+    q = new Quaternion();   // Identity quaternion
+    assertEquals(q.getAngle(), 0.0, EPSILON);
+  }
+
+  @Test
+  public void testGetAngleRad() {
+    Quaternion q = new Quaternion(1, 2, 3, 4);
+    assertEquals(q.getAngleRad(), 1.5040801783846716, EPSILON);
+
+    q = new Quaternion(0, 0, 0, 1);
+    assertEquals(q.getAngleRad(), 0, EPSILON);
+
+    q = new Quaternion(1, 3, 0, 0);
+    assertEquals(q.getAngleRad(), 3.141592653589793, EPSILON);
+  }
 }

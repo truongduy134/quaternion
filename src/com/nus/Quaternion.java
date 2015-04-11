@@ -1,7 +1,10 @@
 package com.nus;
 
 /**
- * Created by duy on 9/3/15.
+ * Self-contained and lightweight Java implementation of Quaternion. The class
+ * supports a variety of Quaternion operations and functions
+ *
+ * @author Duy Nguyen-Truong (truongduy134@gmail.com)
  */
 public class Quaternion {
   private double x;

@@ -84,6 +84,27 @@ public class Quaternion {
   }
 
   /**
+   * Gets the vector component (x, y, z) of this quaternion
+   *
+   * @return An array of size 3 representing the vector (x, y, z)
+   */
+  public double[] getVectorPart() {
+    double[] vector = new double[] {this.x, this.y, this.z};
+    return vector;
+  }
+
+  /**
+   * Get scalar component (w-component) of this quaternion
+   *
+   * @return The scalar component (w-component) of this quaternion
+   *
+   * @see #getW()
+   */
+  public double getScalarPart() {
+    return w;
+  }
+
+  /**
    * Gets the angle (in degree) in the angle-axis representation of the rotation
    * that this Quaternion represents
    *

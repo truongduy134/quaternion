@@ -55,6 +55,19 @@ public class QuaternionTest {
   }
 
   @Test
+  public void testTrivialGetters() {
+    Quaternion p = new Quaternion(-1.0, 2.99, 3.0, 4.5);
+    double[] expectedVector = new double[] {-1.0, 2.99, 3.0};
+
+    assertEquals(p.getX(), -1.0, EPSILON);
+    assertEquals(p.getY(), 2.99, EPSILON);
+    assertEquals(p.getZ(), 3.0, EPSILON);
+    assertEquals(p.getW(), 4.5, EPSILON);
+    assertEquals(p.getScalarPart(), 4.5, EPSILON);
+    assertArrayEquals(p.getVectorPart(), expectedVector, EPSILON);
+  }
+
+  @Test
   public void testGetIdentity() {
     Quaternion identity = new Quaternion(0.0, 0.0, 0.0, 1.0);
     assertQuaternionEquals(Quaternion.getIdentity(), identity);

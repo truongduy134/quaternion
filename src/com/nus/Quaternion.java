@@ -268,6 +268,18 @@ public class Quaternion {
   }
 
   /**
+   * Performs scalar multiplication of this quaternion and the input number
+   *
+   * @param scalar A constant factor
+   * @return The quaternion which is the multiplication result
+   */
+  public final Quaternion multiply(double scalar) {
+    Quaternion result = new Quaternion(this);
+    result.multiplyEq(scalar);
+    return result;
+  }
+
+  /**
    * Performs multiplication of this quaternion with the input quaternion, i.e.
    * {@code this * another}. Assigns the result to this object
    *
@@ -286,6 +298,19 @@ public class Quaternion {
     this.x = newX;
     this.y = newY;
     this.z = newZ;
+  }
+
+  /**
+   * Performs scalar multiplication of this quaternion and the input number.
+   * Assigns the result to this object
+   *
+   * @param scalar
+   */
+  public final void multiplyEq(double scalar) {
+    this.x *= scalar;
+    this.y *= scalar;
+    this.z *= scalar;
+    this.w *= scalar;
   }
 
   /**
@@ -341,6 +366,30 @@ public class Quaternion {
    */
   public final void divideEq(Quaternion another) {
     this.multiplyEq(another.inverse());
+  }
+
+  /**
+   * Gets the exponential of this Quaternion
+   *
+   * @return The exponential Quaternion
+   */
+  public final Quaternion exp() {
+    double[] vectorPart = this.getVectorPart();
+    double vNorm = vectorNorm(vectorPart);
+
+    if (vNorm < EPSILON) {
+      return new Quaternion(0.0, 0.0, 0.0, Math.exp(this.w));
+    }
+
+    double scalar = Math.sin(vNorm) / vNorm;
+    for (int i = 0; i < vectorPart.length; ++i) {
+      vectorPart[i] *= scalar;
+    }
+
+    Quaternion result = new Quaternion(
+      vectorPart[0], vectorPart[1], vectorPart[2], Math.cos(vNorm));
+    result.multiplyEq(Math.exp(this.w));
+    return result;
   }
 
   /**
@@ -506,5 +555,13 @@ public class Quaternion {
 
   private static double radianToDegree(double radian) {
     return radian / Math.PI * 180;
+  }
+
+  private static double vectorNorm(double[] vector) {
+    double result = 0.0;
+    for (int i = 0; i < vector.length; ++i) {
+      result += vector[i] * vector[i];
+    }
+    return Math.sqrt(result);
   }
 }

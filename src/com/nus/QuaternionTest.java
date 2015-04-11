@@ -186,6 +186,17 @@ public class QuaternionTest {
   }
 
   @Test
+  public void testScalarMultiple() {
+    Quaternion p = new Quaternion(1.0, 2.0, 3.0, 4.0);
+    double scalar = 0.5;
+    Quaternion expected = new Quaternion(0.5, 1.0, 1.5, 2.0);
+    assertQuaternionEquals(p.multiply(scalar), expected);
+
+    p.multiplyEq(scalar);
+    assertQuaternionEquals(p, expected);
+  }
+
+  @Test
   public void testInverse() {
     Quaternion p = new Quaternion(0.0, 1.0, 0.0, 1.0);
     Quaternion expectedInverse = new Quaternion(0.0, -0.5, 0.0, 0.5);
@@ -227,6 +238,26 @@ public class QuaternionTest {
     expectDiv = new Quaternion(0.0, 0.0, 0.0, 1.0);
     q.divideEq(q);
     assertQuaternionEquals(q, expectDiv);
+  }
+
+  @Test
+  public void testExp() {
+    Quaternion zeroQ = new Quaternion(0.0, 0.0, 0.0, 0.0);
+    Quaternion identity = new Quaternion();
+    assertQuaternionEquals(zeroQ.exp(), identity);
+
+    Quaternion q = new Quaternion(1.0, 1.0, 1.0, 0.0);
+    Quaternion expectedQ = new Quaternion(
+      0.5698600991825139, 0.5698600991825139, 0.5698600991825139,
+      -0.16055653857469054
+    );
+    assertQuaternionEquals(q.exp(), expectedQ);
+
+    q = new Quaternion(1.0, 1.0, 1.0, 1.0);
+    expectedQ = new Quaternion(
+      1.5490403523716967, 1.5490403523716967,
+      1.5490403523716967, -0.436437921247865);
+    assertQuaternionEquals(q.exp(), expectedQ);
   }
 
   @Test

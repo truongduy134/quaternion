@@ -339,10 +339,7 @@ public class Quaternion {
   public final void invert() {
     double sqNorm = this.squaredNorm();
     this.conjugateEq();
-    this.x /= sqNorm;
-    this.y /= sqNorm;
-    this.z /= sqNorm;
-    this.w /= sqNorm;
+    this.multiplyEq(1.0 / sqNorm);
   }
 
   /**
@@ -499,15 +496,14 @@ public class Quaternion {
     }
 
     // Normalize the input vector
-    double vectorNorm = Math.sqrt(axis[0] * axis[0] + axis[1] * axis[1] +
-      axis[2] * axis[2]);
-    if (vectorNorm < EPSILON) {
+    double vNorm = vectorNorm(axis);
+    if (vNorm < EPSILON) {
       return new Quaternion();    // Identity Quaternion
     }
 
-    axis[0] /= vectorNorm;
-    axis[1] /= vectorNorm;
-    axis[2] /= vectorNorm;
+    axis[0] /= vNorm;
+    axis[1] /= vNorm;
+    axis[2] /= vNorm;
 
     double halfAngle = angleInRad / 2.0;
     double sinTerm = Math.sin(halfAngle);

@@ -258,8 +258,8 @@ public class Quaternion {
   }
 
   /**
-   * Performs multiplication of this quaternion with the input quaternion, i.e.
-   * {@code this * another}
+   * Performs multiplication of this quaternion with the input quaternion,
+   * that is {@code this * another}
    *
    * @param another The other quaternion involving in the multiplication
    * @return The quaternion which is the multiplication result
@@ -283,8 +283,8 @@ public class Quaternion {
   }
 
   /**
-   * Performs multiplication of this quaternion with the input quaternion, i.e.
-   * {@code this * another}. Assigns the result to this object
+   * Performs multiplication of this quaternion with the input quaternion,
+   * that is {@code this * another}. Assigns the result to this object
    *
    * @param another The other quaternion involving in the multiplication
    */
@@ -307,7 +307,7 @@ public class Quaternion {
    * Performs scalar multiplication of this quaternion and the input number.
    * Assigns the result to this object
    *
-   * @param scalar
+   * @param scalar A constant factor
    */
   public final void multiplyEq(double scalar) {
     this.x *= scalar;
@@ -346,7 +346,7 @@ public class Quaternion {
   }
 
   /**
-   * Performs division of this quaternion with the input quaternion, i.e.
+   * Performs division of this quaternion with the input quaternion, that is
    * {@code this / another}
    *
    * @param another The other quaternion involving in the division
@@ -359,7 +359,7 @@ public class Quaternion {
   }
 
   /**
-   * Performs division of this quaternion with the input quaternion, i.e.
+   * Performs division of this quaternion with the input quaternion, that is
    * {@code this / another}. Assigns the result to this object
    *
    * @param another The other quaternion involving in the division
@@ -519,7 +519,7 @@ public class Quaternion {
 
   /**
    * Gets the unit Quaternion of a rotation specified by Euler . The order of
-   * rotation is applying yaw, then pitch, then roll (i.e. z -> y -> x)
+   * rotation is applying yaw, then pitch, then roll (that is z -&gt; y -&gt; x)
    *
    * @param roll The roll angle (in radians)
    * @param pitch The pitch angle (in radians)

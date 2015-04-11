@@ -351,4 +351,22 @@ public class QuaternionTest {
     axis = q.getRotationAxis();
     assertArrayEquals(axis, expectedAxis, EPSILON);
   }
+
+  @Test
+  public void testFromEulerAngles() {
+    double yaw = 0.7854;
+    double pitch = 0.1;
+    double roll = 0.0;
+    Quaternion expectedQ = new Quaternion(
+      -0.019126242445565825, 0.046174713977463394,
+      0.3822060250627864, 0.9227245726893359);
+
+    Quaternion q = Quaternion.fromEulerAngles(roll, pitch, yaw);
+    assertQuaternionEquals(q, expectedQ);
+    assertTrue(q.isUnit());
+
+    yaw = pitch = roll = 0.0;
+    q = Quaternion.fromEulerAngles(roll, pitch, yaw);
+    assertTrue(q.isIdentity());
+  }
 }

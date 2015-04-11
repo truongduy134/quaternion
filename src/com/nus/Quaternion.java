@@ -463,6 +463,37 @@ public class Quaternion {
     return new Quaternion(x, y, z, w);
   }
 
+  /**
+   * Gets the unit Quaternion of a rotation specified by Euler . The order of
+   * rotation is applying yaw, then pitch, then roll (i.e. z -> y -> x)
+   *
+   * @param roll The roll angle (in radians)
+   * @param pitch The pitch angle (in radians)
+   * @param yaw The yaw angle (in radians)
+   * @return The unit Quaternion of a rotation specified by {@code roll},
+   *         {@code pitch}, {@code yaw} angles
+   */
+  public static Quaternion fromEulerAngles(
+      double roll, double pitch, double yaw) {
+    double cosHalfRoll = Math.cos(roll * 0.5);
+    double cosHalfPitch = Math.cos(pitch * 0.5);
+    double cosHalfYaw = Math.cos(yaw * 0.5);
+    double sinHalfRoll = Math.sin(roll * 0.5);
+    double sinHalfPitch = Math.sin(pitch * 0.5);
+    double sinHalfYaw = Math.sin(yaw * 0.5);
+
+    double w = cosHalfYaw * cosHalfPitch * cosHalfRoll +
+      sinHalfYaw * sinHalfPitch * sinHalfRoll;
+    double x = cosHalfYaw * cosHalfPitch * sinHalfRoll -
+      sinHalfYaw * sinHalfPitch * cosHalfRoll;
+    double y = cosHalfYaw * sinHalfPitch * cosHalfRoll +
+      sinHalfYaw * cosHalfPitch * sinHalfRoll;
+    double z = sinHalfYaw * cosHalfPitch * cosHalfRoll -
+      cosHalfYaw * sinHalfPitch * sinHalfRoll;
+
+    return new Quaternion(x, y, z, w);
+  }
+
   private static double degreeToRadian(double degree) {
     return Math.PI * degree / 180;
   }

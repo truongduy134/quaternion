@@ -9,7 +9,7 @@ public class Quaternion {
   private double z;
   private double w;
 
-  private final double EPSILON = 0.00000000001;
+  public static final double EPSILON = 0.00000000001;
   public static final String VECTOR_INVALID_LENGTH_MSG =
     "Input vector must be an array of size 3";
 
@@ -418,7 +418,8 @@ public class Quaternion {
    * @param axis An array of size 3 representing the vector (x, y, z)
    * @param angleInDeg The angle (in degrees) of the rotation
    * @return The unit Quaternion of the rotation given by the input axis-angle
-   *         representation
+   *         representation. If the norm of input axis vector is less than
+   *         {@link Quaternion#EPSILON}, an identity Quaternion is returned
    * @throws IllegalArgumentException if input vector is not an array of size 3
    */
   public static Quaternion fromAxisAngle(double[] axis, double angleInDeg)
@@ -438,7 +439,8 @@ public class Quaternion {
    * @param axis An array of size 3 representing the vector (x, y, z)
    * @param angleInRad The angle (in radians) of the rotation
    * @return The unit Quaternion of the rotation given by the input axis-angle
-   *         representation
+   *         representation. If the norm of input axis vector is less than
+   *         {@link Quaternion#EPSILON}, an identity Quaternion is returned
    * @throws IllegalArgumentException if input vector is not an array of size 3
    */
   public static Quaternion fromAxisAngleRad(double[] axis, double angleInRad)
@@ -450,6 +452,10 @@ public class Quaternion {
     // Normalize the input vector
     double vectorNorm = Math.sqrt(axis[0] * axis[0] + axis[1] * axis[1] +
       axis[2] * axis[2]);
+    if (vectorNorm < EPSILON) {
+      return new Quaternion();    // Identity Quaternion
+    }
+
     axis[0] /= vectorNorm;
     axis[1] /= vectorNorm;
     axis[2] /= vectorNorm;

@@ -282,6 +282,14 @@ public class QuaternionTest {
     result = Quaternion.fromAxisAngle(axis, angleDeg);
     assertQuaternionEquals(result, expected);
     assertTrue(result.isUnit());
+
+    // Zero vector for axis
+    axis = new double[] {0.0, 0.0, 0.0};
+    expected = new Quaternion();
+    angleDeg = 100;
+    result = Quaternion.fromAxisAngle(axis, angleDeg);
+    assertQuaternionEquals(result, expected);
+    assertTrue(result.isIdentity());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -305,6 +313,14 @@ public class QuaternionTest {
     result = Quaternion.fromAxisAngleRad(axis, angleRad);
     assertQuaternionEquals(result, expected);
     assertTrue(result.isUnit());
+
+    // Zero vector for axis
+    axis = new double[] {0.0, 0.0, 0.0};
+    expected = new Quaternion();
+    angleRad = Math.PI / 8;
+    result = Quaternion.fromAxisAngle(axis, angleRad);
+    assertQuaternionEquals(result, expected);
+    assertTrue(result.isIdentity());
   }
 
   @Test(expected = IllegalArgumentException.class)

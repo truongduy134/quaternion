@@ -260,6 +260,35 @@ public class QuaternionTest {
     assertQuaternionEquals(q.exp(), expectedQ);
   }
 
+  @Test(expected = ArithmeticException.class)
+  public void testLogWithZeroQuaternion() {
+    Quaternion zero = new Quaternion(0.0, 0.0, 0.0, 0.0);
+    zero.log();
+  }
+
+  @Test
+  public void testLogWithNonZeroQuaternion() throws Exception {
+    Quaternion q = new Quaternion(
+      0.5698600991825139, 0.5698600991825139,
+      0.5698600991825139, -0.16055653857469054);
+    Quaternion expected = new Quaternion(1.0, 1.0, 1.0, 0.0);
+
+    assertQuaternionEquals(q.log(), expected);
+
+    q = new Quaternion();  // Unit quaternion
+    expected = new Quaternion(0.0, 0.0, 0.0, 0.0);
+    assertQuaternionEquals(q.log(), expected);
+
+    q = new Quaternion(0.0, 0.0, 0.0, Math.E);
+    expected = new Quaternion();
+    assertQuaternionEquals(q.log(), expected);
+
+    q = new Quaternion(
+      3.9136670095, 3.1309336076, 5.2182226793, -18.7371131940);
+    expected = new Quaternion(1.5, 1.2, 2, 3.0);
+    assertQuaternionEquals(q.log(), expected);
+  }
+
   @Test
   public void testRotate() {
     Quaternion q = new Quaternion(0.0, 1.0, 0.0, 1.0);

@@ -15,6 +15,8 @@ public class Quaternion {
   public static final double EPSILON = 0.00000000001;
   public static final String VECTOR_INVALID_LENGTH_MSG =
     "Input vector must be an array of size 3";
+  public static final String UNDEFINED_LOG_ZERO_QUATERNION_MSG =
+    "Logarithm of zero quaternion is undefined";
 
   /**
    * Default Constructor. Constructs an identity Quaternion (0.0, 0.0, 0.0, 1.0)
@@ -390,6 +392,34 @@ public class Quaternion {
       vectorPart[0], vectorPart[1], vectorPart[2], Math.cos(vNorm));
     result.multiplyEq(Math.exp(this.w));
     return result;
+  }
+
+  /**
+   * Gets the natural logarithm of this Quaternion
+   *
+   * @return The logarithm Quaternion
+   * @throws ArithmeticException if the Quaternion has norm approaching 0, that
+   *         is the norm is less than {@link Quaternion#EPSILON}
+   */
+  public final Quaternion log() throws ArithmeticException {
+    double qNorm = this.norm();
+    if (qNorm < EPSILON) {
+      throw new ArithmeticException(UNDEFINED_LOG_ZERO_QUATERNION_MSG);
+    }
+
+    double[] vectorPart = this.getVectorPart();
+    double vNorm = vectorNorm(vectorPart);
+    double[] resultVector = new double[] {0.0, 0.0, 0.0};
+    if (!(vNorm < EPSILON)) {
+      double factor = Math.acos(this.w / qNorm) / vNorm;
+      for (int i = 0; i < vectorPart.length; ++i) {
+        resultVector[i] = vectorPart[i] * factor;
+      }
+    }
+
+    return new Quaternion(
+      resultVector[0], resultVector[1], resultVector[2], Math.log(qNorm)
+    );
   }
 
   /**

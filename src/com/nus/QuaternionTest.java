@@ -445,4 +445,20 @@ public class QuaternionTest {
     q = Quaternion.fromEulerAngles(roll, pitch, yaw);
     assertTrue(q.isIdentity());
   }
+
+  @Test
+  public void testEquals() {
+    Quaternion q = new Quaternion(1.0, 2.234, 3.532, 4.125);
+    Quaternion sameQ = new Quaternion(1.00, 2.234, 3.532, 4.125);
+    Quaternion copyQ = new Quaternion(q);
+    Quaternion differentQ = new Quaternion(1.0001, 2.234, 3.532, 4.125);
+
+    assertTrue(q.equals(q));
+    assertTrue(q.equals(sameQ));
+    assertTrue(q.equals(copyQ));
+    assertTrue(sameQ.equals(copyQ));
+
+    assertFalse(q.equals(null));
+    assertFalse(q.equals(differentQ));
+  }
 }

@@ -595,4 +595,26 @@ public class Quaternion {
     return String.format("Quaternion(%f, %f, %f, %f)",
     this.x, this.y, this.z, this.w);
   }
+
+  @Override
+  public boolean equals(Object another) {
+    // Self comparison
+    if (this == another) {
+      return true;
+    }
+
+    if (!(another instanceof Quaternion)) {
+      return false;
+    }
+
+    Quaternion anotherQ = (Quaternion) another;
+    if (Double.compare(anotherQ.w, this.w) != 0 ||
+        Double.compare(anotherQ.x, this.x) != 0 ||
+        Double.compare(anotherQ.y, this.y) != 0 ||
+        Double.compare(anotherQ.z, this.z) != 0) {
+      return false;
+    }
+
+    return true;
+  }
 }

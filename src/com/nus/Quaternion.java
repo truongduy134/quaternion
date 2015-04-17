@@ -469,17 +469,6 @@ public class Quaternion {
     return imageVector;
   }
 
-  /**
-   * Gets a string representation of this Quaternion for display purposes
-   *
-   * @return A string contains information about this Quaternion
-   */
-  @Override
-  public String toString() {
-    return String.format("Quaternion(%f, %f, %f, %f)",
-      this.x, this.y, this.z, this.w);
-  }
-
   // Static functions to create Quaternion
 
   /**
@@ -592,5 +581,18 @@ public class Quaternion {
       result += vector[i] * vector[i];
     }
     return Math.sqrt(result);
+  }
+
+  // Overridden methods inherited from Object
+
+  /**
+   * Gets a string representation of this Quaternion for display purposes
+   *
+   * @return A string contains information about this Quaternion
+   */
+  @Override
+  public String toString() {
+    return String.format("Quaternion(%f, %f, %f, %f)",
+    this.x, this.y, this.z, this.w);
   }
 }

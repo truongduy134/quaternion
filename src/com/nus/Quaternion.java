@@ -45,7 +45,7 @@ public class Quaternion {
    *
    * @param another the Quaternion to be copied
    */
-  public Quaternion(Quaternion another) {
+  public Quaternion(final Quaternion another) {
     this.x = another.x;
     this.y = another.y;
     this.z = another.z;
@@ -189,7 +189,7 @@ public class Quaternion {
    *         threshold (that means corresponding components are equal within
    *         the tolerance threshold); {@code false} otherwise
    */
-  public boolean equals(Quaternion another, double threshold) {
+  public boolean equals(final Quaternion another, double threshold) {
     if (another == null) {
       return false;
     }
@@ -262,7 +262,7 @@ public class Quaternion {
    * @param another The other quaternion involving in the addition
    * @return The quaternion which is the sum result
    */
-  public final Quaternion add(Quaternion another) {
+  public final Quaternion add(final Quaternion another) {
     Quaternion result = new Quaternion(this);
     result.addEq(another);
     return result;
@@ -273,7 +273,7 @@ public class Quaternion {
    *
    * @param another The other quaternion involving in the addition
    */
-  public final void addEq(Quaternion another) {
+  public final void addEq(final Quaternion another) {
     this.x += another.x;
     this.y += another.y;
     this.z += another.z;
@@ -287,7 +287,7 @@ public class Quaternion {
    * @param another The other quaternion involving in the multiplication
    * @return The quaternion which is the multiplication result
    */
-  public final Quaternion multiply(Quaternion another) {
+  public final Quaternion multiply(final Quaternion another) {
     Quaternion result = new Quaternion(this);
     result.multiplyEq(another);
     return result;
@@ -311,7 +311,7 @@ public class Quaternion {
    *
    * @param another The other quaternion involving in the multiplication
    */
-  public final void multiplyEq(Quaternion another) {
+  public final void multiplyEq(final Quaternion another) {
     double newW = another.w * this.w - another.x * this.x -
       another.y * this.y - another.z * this.z;
     double newX = another.w * this.x + another.x * this.w -
@@ -375,7 +375,7 @@ public class Quaternion {
    * @param another The other quaternion involving in the division
    * @return The quaternion which is the division result
    */
-  public final Quaternion divide(Quaternion another) {
+  public final Quaternion divide(final Quaternion another) {
     Quaternion result = new Quaternion(this);
     result.divideEq(another);
     return result;
@@ -387,7 +387,7 @@ public class Quaternion {
    *
    * @param another The other quaternion involving in the division
    */
-  public final void divideEq(Quaternion another) {
+  public final void divideEq(final Quaternion another) {
     this.multiplyEq(another.inverse());
   }
 
@@ -471,7 +471,7 @@ public class Quaternion {
    * @return The image of the input vector after the rotation
    * @throws IllegalArgumentException if input vector is not an array of size 3
    */
-  public final double[] rotate(double[] vector)
+  public final double[] rotate(final double[] vector)
       throws IllegalArgumentException {
     if (vector.length != 3) {
       throw new IllegalArgumentException("Input must be an array of size 3");
@@ -511,7 +511,7 @@ public class Quaternion {
    *         {@link Quaternion#EPSILON}, an identity Quaternion is returned
    * @throws IllegalArgumentException if input vector is not an array of size 3
    */
-  public static Quaternion fromAxisAngle(double[] axis, double angleInDeg)
+  public static Quaternion fromAxisAngle(final double[] axis, double angleInDeg)
       throws IllegalArgumentException {
     if (axis.length != 3) {
       throw new IllegalArgumentException(Quaternion.VECTOR_INVALID_LENGTH_MSG);
@@ -532,8 +532,8 @@ public class Quaternion {
    *         {@link Quaternion#EPSILON}, an identity Quaternion is returned
    * @throws IllegalArgumentException if input vector is not an array of size 3
    */
-  public static Quaternion fromAxisAngleRad(double[] axis, double angleInRad)
-      throws IllegalArgumentException {
+  public static Quaternion fromAxisAngleRad(
+      final double[] axis, double angleInRad) throws IllegalArgumentException {
     if (axis.length != 3) {
       throw new IllegalArgumentException(Quaternion.VECTOR_INVALID_LENGTH_MSG);
     }
@@ -596,7 +596,7 @@ public class Quaternion {
     return radian / Math.PI * 180;
   }
 
-  private static double vectorNorm(double[] vector) {
+  private static double vectorNorm(final double[] vector) {
     double result = 0.0;
     for (int i = 0; i < vector.length; ++i) {
       result += vector[i] * vector[i];

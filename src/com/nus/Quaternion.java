@@ -180,6 +180,27 @@ public class Quaternion {
   }
 
   /**
+   * Checks if this Quaternion equals to the input Quaternion within the
+   * specified tolerance threshold
+   *
+   * @param another Another Quaternion for comparison
+   * @param threshold A tolerance threshold value
+   * @return {@code true} if two Quaternions are equal within the tolerance
+   *         threshold (that means corresponding components are equal within
+   *         the tolerance threshold); {@code false} otherwise
+   */
+  public boolean equals(Quaternion another, double threshold) {
+    if (another == null) {
+      return false;
+    }
+
+    return Math.abs(another.getX() - this.x) < threshold &&
+    Math.abs(another.getY() - this.y) < threshold &&
+    Math.abs(another.getZ() - this.z) < threshold &&
+    Math.abs(another.getW() - this.w) < threshold;
+  }
+
+  /**
    * Computes the norm of this quaternion
    *
    * @return the norm of this quaternion
@@ -469,17 +490,6 @@ public class Quaternion {
     return imageVector;
   }
 
-  /**
-   * Gets a string representation of this Quaternion for display purposes
-   *
-   * @return A string contains information about this Quaternion
-   */
-  @Override
-  public String toString() {
-    return String.format("Quaternion(%f, %f, %f, %f)",
-      this.x, this.y, this.z, this.w);
-  }
-
   // Static functions to create Quaternion
 
   /**
@@ -592,5 +602,54 @@ public class Quaternion {
       result += vector[i] * vector[i];
     }
     return Math.sqrt(result);
+  }
+
+  // Overridden methods inherited from Object
+
+  /**
+   * Gets a string representation of this Quaternion for display purposes
+   *
+   * @return A string contains information about this Quaternion
+   */
+  @Override
+  public String toString() {
+    return String.format("Quaternion(%f, %f, %f, %f)",
+    this.x, this.y, this.z, this.w);
+  }
+
+  @Override
+  public boolean equals(Object another) {
+    // Self comparison
+    if (this == another) {
+      return true;
+    }
+
+    if (!(another instanceof Quaternion)) {
+      return false;
+    }
+
+    Quaternion anotherQ = (Quaternion) another;
+    if (Double.compare(anotherQ.w, this.w) != 0 ||
+        Double.compare(anotherQ.x, this.x) != 0 ||
+        Double.compare(anotherQ.y, this.y) != 0 ||
+        Double.compare(anotherQ.z, this.z) != 0) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int prime = 31;
+    int result = 13;
+
+    double[] fields = new double[] {this.x, this.y, this.z, this.w};
+    for (int i = 0; i < fields.length; ++i) {
+      long temp = Double.doubleToLongBits(fields[i]);
+      result = prime * result + (int) (temp ^ (temp >>> 32));
+    }
+
+    return result;
   }
 }

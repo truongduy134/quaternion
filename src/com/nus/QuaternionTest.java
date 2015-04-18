@@ -470,4 +470,15 @@ public class QuaternionTest {
     assertTrue(q.equals(sameQ));
     assertEquals(q.hashCode(), sameQ.hashCode());
   }
+
+  @Test
+  public void testEqualsWithThreshold() {
+    Quaternion q = new Quaternion(1.0, 2.0, 3.0, 4.0);
+    Quaternion almostEqualQ = new Quaternion(
+      1.000000002, 2.000000002, 3.000000002, 4.000000002);
+
+    assertFalse(q.equals(null));
+    assertFalse(q.equals(almostEqualQ, 0.0000000001));
+    assertTrue(q.equals(almostEqualQ, 0.0000001));
+  }
 }

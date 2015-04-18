@@ -180,6 +180,27 @@ public class Quaternion {
   }
 
   /**
+   * Checks if this Quaternion equals to the input Quaternion within the
+   * specified tolerance threshold
+   *
+   * @param another Another Quaternion for comparison
+   * @param threshold A tolerance threshold value
+   * @return {@code true} if two Quaternions are equal within the tolerance
+   *         threshold (that means corresponding components are equal within
+   *         the tolerance threshold); {@code false} otherwise
+   */
+  public boolean equals(Quaternion another, double threshold) {
+    if (another == null) {
+      return false;
+    }
+
+    return Math.abs(another.getX() - this.x) < threshold &&
+    Math.abs(another.getY() - this.y) < threshold &&
+    Math.abs(another.getZ() - this.z) < threshold &&
+    Math.abs(another.getW() - this.w) < threshold;
+  }
+
+  /**
    * Computes the norm of this quaternion
    *
    * @return the norm of this quaternion

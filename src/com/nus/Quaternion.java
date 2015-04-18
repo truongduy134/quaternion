@@ -617,4 +617,18 @@ public class Quaternion {
 
     return true;
   }
+
+  @Override
+  public int hashCode() {
+    int prime = 31;
+    int result = 13;
+
+    double[] fields = new double[] {this.x, this.y, this.z, this.w};
+    for (int i = 0; i < fields.length; ++i) {
+      long temp = Double.doubleToLongBits(fields[i]);
+      result = prime * result + (int) (temp ^ (temp >>> 32));
+    }
+
+    return result;
+  }
 }

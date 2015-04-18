@@ -461,4 +461,13 @@ public class QuaternionTest {
     assertFalse(q.equals(null));
     assertFalse(q.equals(differentQ));
   }
+
+  @Test
+  public void testHashCode() {
+    Quaternion q = new Quaternion(1.12, 1.4351, 3.12545, 4.12567);
+    Quaternion sameQ = new Quaternion(1.1200, 1.435100, 3.1254500, 4.1256700);
+
+    assertTrue(q.equals(sameQ));
+    assertEquals(q.hashCode(), sameQ.hashCode());
+  }
 }

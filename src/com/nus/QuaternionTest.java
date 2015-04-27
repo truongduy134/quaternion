@@ -9,6 +9,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 public class QuaternionTest {
 
   public static final double EPSILON = 0.0000000001;
@@ -480,5 +485,19 @@ public class QuaternionTest {
     assertFalse(q.equals(null));
     assertFalse(q.equals(almostEqualQ, 0.0000000001));
     assertTrue(q.equals(almostEqualQ, 0.0000001));
+  }
+
+  @Test
+  public void testSerialVersionUID() throws Exception {
+    Quaternion q = new Quaternion(1.234, 34.12315, 4645.124236, -997.1242358);
+    FileOutputStream fos = new FileOutputStream("unit-test.out");
+    ObjectOutputStream oos = new ObjectOutputStream(fos);
+    oos.writeObject(q);
+
+    FileInputStream fis = new FileInputStream("unit-test.out");
+    ObjectInputStream ois = new ObjectInputStream(fis);
+    Quaternion deserializedQ = (Quaternion) ois.readObject();
+
+    assertTrue(q.equals(deserializedQ));
   }
 }

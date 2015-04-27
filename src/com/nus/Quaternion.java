@@ -1,16 +1,20 @@
 package com.nus;
 
+import java.io.Serializable;
+
 /**
  * Self-contained and lightweight Java implementation of Quaternion. The class
  * supports a variety of Quaternion operations and functions
  *
  * @author Duy Nguyen-Truong (truongduy134@gmail.com)
  */
-public class Quaternion {
+public class Quaternion implements Serializable {
   private double x;
   private double y;
   private double z;
   private double w;
+
+  private static final long serialVersionUID = 2L;
 
   public static final double EPSILON = 0.00000000001;
   public static final String VECTOR_INVALID_LENGTH_MSG =

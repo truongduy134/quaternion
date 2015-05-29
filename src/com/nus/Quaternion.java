@@ -21,6 +21,14 @@ public class Quaternion implements Serializable {
     "Input vector must be an array of size 3";
   public static final String UNDEFINED_LOG_ZERO_QUATERNION_MSG =
     "Logarithm of zero quaternion is undefined";
+  public static final String INVALID_INTERPOLATION_PARAM =
+    "Interpolation parameter must be between 0 and 1 inclusively";
+
+  //////////////////////////////////////////////////////////
+  //
+  // Constructors, setters and getters
+  //
+  /////////////////////////////////////////////////////////
 
   /**
    * Default Constructor. Constructs an identity Quaternion (0.0, 0.0, 0.0, 1.0)
@@ -163,6 +171,12 @@ public class Quaternion implements Serializable {
     return axis;
   }
 
+  //////////////////////////////////////////////////////////
+  //
+  // Truth methods for Quaternion
+  //
+  /////////////////////////////////////////////////////////
+
   /**
    * Checks if this Quaternion is an identity quaternion (0.0, 0.0, 0.0, 1.0)
    *
@@ -204,6 +218,12 @@ public class Quaternion implements Serializable {
     Math.abs(another.getW() - this.w) < threshold;
   }
 
+  //////////////////////////////////////////////////////////
+  //
+  // Quaternion normalization
+  //
+  /////////////////////////////////////////////////////////
+
   /**
    * Computes the norm of this quaternion
    *
@@ -241,6 +261,12 @@ public class Quaternion implements Serializable {
   public final void toUnit() {
     this.normalize();
   }
+
+  //////////////////////////////////////////////////////////
+  //
+  // Quaternion Arithmetics
+  //
+  /////////////////////////////////////////////////////////
 
   /**
    * Gets the conjugate of this quaternion
@@ -395,6 +421,12 @@ public class Quaternion implements Serializable {
     this.multiplyEq(another.inverse());
   }
 
+  //////////////////////////////////////////////////////////
+  //
+  // Quaternion Transcendental Functions
+  //
+  /////////////////////////////////////////////////////////
+
   /**
    * Gets the exponential of this Quaternion
    *
@@ -447,6 +479,12 @@ public class Quaternion implements Serializable {
     );
   }
 
+  //////////////////////////////////////////////////////////
+  //
+  // Quaternion functions related to Rotation
+  //
+  /////////////////////////////////////////////////////////
+
   /**
    * Returns the rotation matrix represented by the normalized version of
    * this quaternion
@@ -494,7 +532,11 @@ public class Quaternion implements Serializable {
     return imageVector;
   }
 
-  // Static functions to create Quaternion
+  //////////////////////////////////////////////////////////
+  //
+  // Public static methods to create Quaternion
+  //
+  /////////////////////////////////////////////////////////
 
   /**
    * Gets an identity Quaternion (0.0, 0.0, 0.0, 1.0)
@@ -592,6 +634,41 @@ public class Quaternion implements Serializable {
     return new Quaternion(x, y, z, w);
   }
 
+  //////////////////////////////////////////////////////////
+  //
+  // Public static methods for interpolation
+  //
+  /////////////////////////////////////////////////////////
+
+  /**
+   * Interpolates linearly between {@code from} and {@code to} Quaternion. When
+   * {@code t = 1}, the {@code to} Quaternion is returned. When {@code t = 0},
+   * the {@code from} Quaternion is returned
+   *
+   * @param from The first Quaternion
+   * @param to The second Quaternion
+   * @param t Value indicating how far to interpolate between the two
+   *          Quaternions
+   * @return The resulting Quaternion for linear interpolation
+   * @throws IllegalArgumentException if {@code t} is not between 0 and 1
+   *                                  inclusively
+   */
+  public static Quaternion lerp(Quaternion from, Quaternion to, double t)
+      throws IllegalArgumentException {
+    if (t < -EPSILON || t > 1.0 + EPSILON) {
+      throw new IllegalArgumentException(
+        Quaternion.INVALID_INTERPOLATION_PARAM);
+    }
+
+    return from.multiply(1 - t).add(to.multiply(t));
+  }
+
+  //////////////////////////////////////////////////////////
+  //
+  // Private static methods
+  //
+  /////////////////////////////////////////////////////////
+
   private static double degreeToRadian(double degree) {
     return Math.PI * degree / 180;
   }
@@ -608,7 +685,11 @@ public class Quaternion implements Serializable {
     return Math.sqrt(result);
   }
 
+  //////////////////////////////////////////////////////////
+  //
   // Overridden methods inherited from Object
+  //
+  /////////////////////////////////////////////////////////
 
   /**
    * Gets a string representation of this Quaternion for display purposes

@@ -21,6 +21,8 @@ public class Quaternion implements Serializable {
     "Input vector must be an array of size 3";
   public static final String UNDEFINED_LOG_ZERO_QUATERNION_MSG =
     "Logarithm of zero quaternion is undefined";
+  public static final String INVALID_INTERPOLATION_PARAM =
+    "Interpolation parameter must be between 0 and 1 inclusively";
 
   //////////////////////////////////////////////////////////
   //
@@ -630,6 +632,35 @@ public class Quaternion implements Serializable {
       cosHalfYaw * sinHalfPitch * sinHalfRoll;
 
     return new Quaternion(x, y, z, w);
+  }
+
+  //////////////////////////////////////////////////////////
+  //
+  // Public static methods for interpolation
+  //
+  /////////////////////////////////////////////////////////
+
+  /**
+   * Interpolates linearly between {@code from} and {@code to} Quaternion. When
+   * {@code t = 1}, the {@code to} Quaternion is returned. When {@code t = 0},
+   * the {@code from} Quaternion is returned
+   *
+   * @param from The first Quaternion
+   * @param to The second Quaternion
+   * @param t Value indicating how far to interpolate between the two
+   *          Quaternions
+   * @return The resulting Quaternion for linear interpolation
+   * @throws IllegalArgumentException if {@code t} is not between 0 and 1
+   *                                  inclusively
+   */
+  public static Quaternion lerp(Quaternion from, Quaternion to, double t)
+      throws IllegalArgumentException {
+    if (t < -EPSILON || t > 1.0 + EPSILON) {
+      throw new IllegalArgumentException(
+        Quaternion.INVALID_INTERPOLATION_PARAM);
+    }
+
+    return from.multiply(1 - t).add(to.multiply(t));
   }
 
   //////////////////////////////////////////////////////////

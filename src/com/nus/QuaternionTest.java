@@ -500,4 +500,38 @@ public class QuaternionTest {
 
     assertTrue(q.equals(deserializedQ));
   }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testLerpWithInvalidUpperRange() throws Exception {
+    Quaternion from = new Quaternion(1.0, 2.0, 3.0, 4.0);
+    Quaternion to = new Quaternion(2.2, 3.3, 4.4, 1.1);
+    Quaternion.lerp(from, to, 1.00123);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testLerpWithInvalidLowerRange() throws Exception {
+    Quaternion from = new Quaternion(1.0, 2.0, 3.0, 4.0);
+    Quaternion to = new Quaternion(2.2, 3.3, 4.4, 1.1);
+    Quaternion.lerp(from, to, -5.0);
+  }
+
+  @Test
+  public void testLerp() {
+    Quaternion from = new Quaternion(0.0, 1.0, 0.0, 1.0);
+    Quaternion to = new Quaternion(1.0, 0.0, 1.0, 0.0);
+
+    Quaternion lerp = Quaternion.lerp(from, to, 0.0);
+    assertQuaternionEquals(lerp, from);
+
+    lerp = Quaternion.lerp(from, to, 1.0);
+    assertQuaternionEquals(lerp, to);
+
+    lerp = Quaternion.lerp(from, to, 0.5);
+    Quaternion expected = new Quaternion(0.5, 0.5, 0.5, 0.5);
+    assertQuaternionEquals(lerp, expected);
+
+    lerp = Quaternion.lerp(from, to, 0.7);
+    expected = new Quaternion(0.7, 0.3, 0.7, 0.3);
+    assertQuaternionEquals(lerp, expected);
+  }
 }

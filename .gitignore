@@ -58,3 +58,7 @@ crashlytics-build.properties
 
 # Quaternion testing
 *.out
+
+# BUCK
+buck-out/
+.buckd/
